@@ -115,6 +115,8 @@ ifeq (Darwin,$(TARGET_SYS))
   INSTALL_SOSHORT2= $(INSTALL_DYLIBSHORT2)
   LDCONFIG= :
   SED_PC+= -e "s| -Wl,-E||"
+  MacOSVer=$(shell sw_vers -productVersion)
+  export MACOSX_DEPLOYMENT_TARGET=$(MacOSVer)
 endif
 
 ##############################################################################

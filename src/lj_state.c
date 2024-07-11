@@ -28,6 +28,7 @@
 #include "lj_prng.h"
 #include "lj_lex.h"
 #include "lj_alloc.h"
+#include "lj_clib.h"
 #include "luajit.h"
 
 /* -- Stack handling ------------------------------------------------------ */
@@ -304,6 +305,7 @@ LUA_API lua_State *lua_newstate(lua_Alloc allocf, void *allocd)
     return NULL;
   }
   L->status = LUA_OK;
+  lj_clibs_create(L);
   return L;
 }
 
@@ -345,6 +347,7 @@ LUA_API void lua_close(lua_State *L)
 	break;
     }
   }
+  lj_clibs_destroy(L);
   close_state(L);
 }
 
@@ -363,6 +366,8 @@ lua_State *lj_state_new(lua_State *L)
   setgcrefr(L1->env, L->env);
   stack_init(L1, L);  /* init stack */
   lj_assertL(iswhite(obj2gco(L1)), "new thread object is not white");
+  /* all clibs object from main thread */
+  L1->clibs = L->clibs;
   return L1;
 }
 

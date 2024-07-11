@@ -63,4 +63,13 @@ enum {
   VARNAME__MAX
 };
 
+#if 0
+#include <pthread.h>
+#define LJ_LOGF(fmt, args...) \
+    fprintf(stdout, "[LuaJIT: 0x%x]<%s@%d> " fmt "\n", \
+            pthread_self(), __func__, __LINE__, ##args)
+#else
+#define LJ_LOGF(fmt, args...)
+#endif
+
 #endif
